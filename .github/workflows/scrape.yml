@@ -12,23 +12,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # חשוב! הלוג הראה שגרסה 20 לא נתמכת
+          node-version: '24'
 
       - name: Install Dependencies
         run: npm install
 
       - name: Run Scraper
         env:
-          # כאן אנחנו בונים את הקונפיגורציה מתוך ה-Secrets שלך
-          MONEYMAN_CONFIG: |
-            {
-              "storage": {
-                "type": "sheets",
-                "spreadsheetId": "${{ secrets.SPREADSHEET_ID }}",
-                "credentials": ${{ secrets.GOOGLE_KEY }}
-              },
-              "accounts": ${{ secrets.ACCOUNTS_JSON }}
-            }
+          MONEYMAN_CONFIG: ${{ secrets.MONEYMAN_CONFIG }}
           DEBUG: "*"
-          TZ: "Asia/Jerusalem"
         run: npx tsx src/index.ts scrape
