@@ -1,8 +1,7 @@
 --- LOG START ---
-Time: Thu Feb 12 17:18:48 UTC 2026
 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
 
 > moneyman@1.0.0 postinstall
 > patch-package
@@ -11,7 +10,7 @@ patch-package 8.0.1
 Applying patches...
 ky@1.10.0 ✔
 
-added 652 packages, and audited 653 packages in 15s
+added 652 packages, and audited 653 packages in 18s
 
 93 packages are looking for funding
   run `npm fund` for details
@@ -22,7 +21,7 @@ To address all issues, run:
   npm audit fix
 
 Run `npm audit` for details.
-Starting Scrape Execution...
+Starting Scrape...
 npm warn exec The following package was not found and will be installed: tsx@4.21.0
 sendConfigError using MONEYMAN_CONFIG
 Failed to send config error to telegram
@@ -31,45 +30,45 @@ Failed to send config error to telegram
 No configuration found. Please provide MONEYMAN_CONFIG or MONEYMAN_CONFIG_PATH environment variable.
 No Telegram bot info, status and errors will not be sent
 Starting...
-2026-02-12T17:19:09.798Z moneyman:main Running with storage
-2026-02-12T17:19:09.798Z moneyman:notifier Starting...
-2026-02-12T17:19:09.798Z moneyman:main About to start
-2026-02-12T17:19:09.798Z moneyman:main Starting to scrape
-2026-02-12T17:19:09.798Z moneyman:scraper scraping 0 accounts
-2026-02-12T17:19:09.798Z moneyman:scraper start date 2026-02-02T17:19:09.188Z
-2026-02-12T17:19:09.799Z moneyman:scraper months to scrap: 1
-2026-02-12T17:19:09.799Z moneyman:scraper Creating a browser
-2026-02-12T17:19:09.799Z moneyman:browser Creating browser {
+2026-02-12T17:33:26.512Z moneyman:main Running with storage
+2026-02-12T17:33:26.512Z moneyman:notifier Starting...
+2026-02-12T17:33:26.512Z moneyman:main About to start
+2026-02-12T17:33:26.512Z moneyman:main Starting to scrape
+2026-02-12T17:33:26.513Z moneyman:scraper scraping 0 accounts
+2026-02-12T17:33:26.513Z moneyman:scraper start date 2026-02-02T17:33:25.870Z
+2026-02-12T17:33:26.513Z moneyman:scraper months to scrap: 1
+2026-02-12T17:33:26.513Z moneyman:scraper Creating a browser
+2026-02-12T17:33:26.513Z moneyman:browser Creating browser {
   args: [ '--disable-dev-shm-usage', '--no-sandbox' ],
   executablePath: undefined
 }
-2026-02-12T17:19:09.916Z moneyman:main External IP info: {
-  ip: '20.109.38.242',
-  city: 'Boydton',
-  region: 'Virginia',
+2026-02-12T17:33:26.583Z moneyman:main External IP info: {
+  ip: '52.190.141.36',
+  city: 'San Jose',
+  region: 'California',
   country: 'US',
-  loc: '36.6676,-78.3875',
+  loc: '37.3394,-121.8950',
   org: 'AS8075 Microsoft Corporation',
-  postal: '23917',
-  timezone: 'America/New_York',
+  postal: '95025',
+  timezone: 'America/Los_Angeles',
   readme: 'https://ipinfo.io/missingauth'
 }
-2026-02-12T17:19:10.084Z moneyman:scraper Browser created, starting to scrape 0 accounts
-2026-02-12T17:19:10.084Z moneyman:scraper scraping ended, total duration: 0.3s
-2026-02-12T17:19:10.084Z moneyman:main Status changed { status: [], totalTime: 0.2856544560000002 }
-2026-02-12T17:19:10.084Z moneyman:scraper closing browser
-2026-02-12T17:19:10.163Z moneyman:scraper { accounts: 0, transactions: 0 }
-2026-02-12T17:19:10.163Z moneyman:main Scraping ended
-2026-02-12T17:19:10.163Z moneyman:notifier 0 transactions scraped.
+2026-02-12T17:33:27.256Z moneyman:scraper Browser created, starting to scrape 0 accounts
+2026-02-12T17:33:27.257Z moneyman:scraper scraping ended, total duration: 0.7s
+2026-02-12T17:33:27.257Z moneyman:main Status changed { status: [], totalTime: 0.7442355980000002 }
+2026-02-12T17:33:27.257Z moneyman:scraper closing browser
+2026-02-12T17:33:27.459Z moneyman:scraper { accounts: 0, transactions: 0 }
+2026-02-12T17:33:27.459Z moneyman:main Scraping ended
+2026-02-12T17:33:27.459Z moneyman:notifier 0 transactions scraped.
 
 Accounts updated:
 	😶 None
-2026-02-12T17:19:10.168Z moneyman:notifier No transactions found, skipping save
-2026-02-12T17:19:10.169Z moneyman:failureScreenshot Sending failure screenshots { photos: [] }
-2026-02-12T17:19:10.169Z moneyman:notifier Sending photos { photos: [] }
-2026-02-12T17:19:10.169Z moneyman:domain-security No domains recorded
-2026-02-12T17:19:10.170Z moneyman:runner-metadata Used domains: {}
-2026-02-12T17:19:10.171Z moneyman:bot Error: ENXIO: no such device or address, open '/dev/tty'
+2026-02-12T17:33:27.464Z moneyman:notifier No transactions found, skipping save
+2026-02-12T17:33:27.465Z moneyman:failureScreenshot Sending failure screenshots { photos: [] }
+2026-02-12T17:33:27.465Z moneyman:notifier Sending photos { photos: [] }
+2026-02-12T17:33:27.466Z moneyman:domain-security No domains recorded
+2026-02-12T17:33:27.466Z moneyman:runner-metadata Used domains: {}
+2026-02-12T17:33:27.467Z moneyman:bot Error: ENXIO: no such device or address, open '/dev/tty'
     at writeFileSync (node:fs:2427:20)
     at logToPublicLog (/home/runner/work/moneyman/moneyman/src/utils/logger.ts:54:9)
     at runWithStorage (/home/runner/work/moneyman/moneyman/src/bot/index.ts:47:3)
