@@ -8,15 +8,18 @@ jobs:
     steps:
       - name: Run Scraper
         run: |
-          # פענוח ובדיקה אם הסודות בכלל קיימים
+          # 1. פענוח
           echo "${{ secrets.GOOGLE_KEY }}" | base64 --decode > google_key.json
           echo "${{ secrets.ACCOUNTS_JSON }}" | base64 --decode > accounts.json
 
-          # בדיקה ויזואלית לתוך ה-Log (כדי לראות שהקבצים לא ריקים)
-          echo "Checking files size..."
-          ls -l *.json
+          # 2. בדיקה אם הקבצים הם JSON חוקי (ידפיס שגיאה אם לא)
+          echo "Checking Google Key format..."
+          cat google_key.json | jq '.' > /dev/null && echo "Google Key JSON is VALID" || echo "Google Key JSON is INVALID"
+          
+          echo "Checking Accounts format..."
+          cat accounts.json | jq '.' > /dev/null && echo "Accounts JSON is VALID" || echo "Accounts JSON is INVALID"
 
-          # הרצה של הבוט עם הפניה לקבצים
+          # 3. הרצה עם ניסיון להוציא פלט מקסימלי
           docker run --rm \
           -v $(pwd)/google_key.json:/app/google_key.json \
           -v $(pwd)/accounts.json:/app/accounts.json \
