@@ -8,18 +8,27 @@ jobs:
     steps:
       - name: Run Scraper
         env:
-          MONEYMAN_CONFIG: |
-            {
-              "spreadsheetId": "${{ secrets.SPREADSHEET_ID }}",
-              "credentials": {
-                "google": {
-                  "serviceAccountKey": ${{ secrets.GOOGLE_KEY }}
-                }
-              },
-              "accounts": ${{ secrets.ACCOUNTS_JSON }}
-            }
+          # כאן אנחנו מגדירים את הסודות כמשתני סביבה מוגנים
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
+          # אנחנו בונים את ה-Config בתוך משתנה מקומי בתוך ה-Shell
+          MONEYMAN_CONFIG=$(cat <<EOF
+          {
+            "spreadsheetId": "$SPREADSHEET_ID",
+            "credentials": {
+              "google": {
+                "serviceAccountKey": $GOOGLE_KEY
+              }
+            },
+            "accounts": $ACCOUNTS_JSON
+          }
+          EOF
+          )
+          
+          # הרצה של דוקר כשהוא מושך את המשתנה בצורה נקייה
           docker run --rm \
-          -e MONEYMAN_CONFIG \
+          -e MONEYMAN_CONFIG="$MONEYMAN_CONFIG" \
           -e TZ="Asia/Jerusalem" \
           ghcr.io/idokoren/moneyman:latest
