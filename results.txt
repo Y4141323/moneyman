@@ -1,16 +1,7 @@
---- START OF LOG ---
-npm warn EBADENGINE Unsupported engine {
-npm warn EBADENGINE   package: 'moneyman@1.0.0',
-npm warn EBADENGINE   required: { node: '>=24' },
-npm warn EBADENGINE   current: { node: 'v20.20.0', npm: '10.8.2' }
-npm warn EBADENGINE }
-npm warn EBADENGINE Unsupported engine {
-npm warn EBADENGINE   package: 'israeli-bank-scrapers@6.7.1',
-npm warn EBADENGINE   required: { node: '>= 22.12.0' },
-npm warn EBADENGINE   current: { node: 'v20.20.0', npm: '10.8.2' }
-npm warn EBADENGINE }
-npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+--- LOG START ---
+Time: Thu Feb 12 17:18:48 UTC 2026
 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 
 > moneyman@1.0.0 postinstall
@@ -20,9 +11,9 @@ patch-package 8.0.1
 Applying patches...
 ky@1.10.0 ✔
 
-added 653 packages, and audited 654 packages in 17s
+added 652 packages, and audited 653 packages in 15s
 
-94 packages are looking for funding
+93 packages are looking for funding
   run `npm fund` for details
 
 1 high severity vulnerability
@@ -31,56 +22,58 @@ To address all issues, run:
   npm audit fix
 
 Run `npm audit` for details.
-Executing Scraper...
+Starting Scrape Execution...
 npm warn exec The following package was not found and will be installed: tsx@4.21.0
 sendConfigError using MONEYMAN_CONFIG
+Failed to send config error to telegram
 sendConfigError using MONEYMAN_CONFIG
+Failed to send config error to telegram
 No configuration found. Please provide MONEYMAN_CONFIG or MONEYMAN_CONFIG_PATH environment variable.
 No Telegram bot info, status and errors will not be sent
 Starting...
-2026-02-12T17:10:23.373Z moneyman:main Running with storage
-2026-02-12T17:10:23.373Z moneyman:notifier Starting...
-2026-02-12T17:10:23.374Z moneyman:main About to start
-2026-02-12T17:10:23.374Z moneyman:main Starting to scrape
-2026-02-12T17:10:23.374Z moneyman:scraper scraping 0 accounts
-2026-02-12T17:10:23.374Z moneyman:scraper start date 2026-02-02T17:10:22.732Z
-2026-02-12T17:10:23.374Z moneyman:scraper months to scrap: 1
-2026-02-12T17:10:23.374Z moneyman:scraper Creating a browser
-2026-02-12T17:10:23.374Z moneyman:browser Creating browser {
+2026-02-12T17:19:09.798Z moneyman:main Running with storage
+2026-02-12T17:19:09.798Z moneyman:notifier Starting...
+2026-02-12T17:19:09.798Z moneyman:main About to start
+2026-02-12T17:19:09.798Z moneyman:main Starting to scrape
+2026-02-12T17:19:09.798Z moneyman:scraper scraping 0 accounts
+2026-02-12T17:19:09.798Z moneyman:scraper start date 2026-02-02T17:19:09.188Z
+2026-02-12T17:19:09.799Z moneyman:scraper months to scrap: 1
+2026-02-12T17:19:09.799Z moneyman:scraper Creating a browser
+2026-02-12T17:19:09.799Z moneyman:browser Creating browser {
   args: [ '--disable-dev-shm-usage', '--no-sandbox' ],
   executablePath: undefined
 }
-2026-02-12T17:10:23.455Z moneyman:main External IP info: {
-  ip: '64.236.192.152',
-  city: 'Chicago',
-  region: 'Illinois',
+2026-02-12T17:19:09.916Z moneyman:main External IP info: {
+  ip: '20.109.38.242',
+  city: 'Boydton',
+  region: 'Virginia',
   country: 'US',
-  loc: '41.8500,-87.6500',
+  loc: '36.6676,-78.3875',
   org: 'AS8075 Microsoft Corporation',
-  postal: '60602',
-  timezone: 'America/Chicago',
+  postal: '23917',
+  timezone: 'America/New_York',
   readme: 'https://ipinfo.io/missingauth'
 }
-2026-02-12T17:10:23.933Z moneyman:scraper Browser created, starting to scrape 0 accounts
-2026-02-12T17:10:23.933Z moneyman:scraper scraping ended, total duration: 0.6s
-2026-02-12T17:10:23.933Z moneyman:main Status changed { status: [], totalTime: 0.5593230650000001 }
-2026-02-12T17:10:23.933Z moneyman:scraper closing browser
-2026-02-12T17:10:24.017Z moneyman:scraper { accounts: 0, transactions: 0 }
-2026-02-12T17:10:24.017Z moneyman:main Scraping ended
-2026-02-12T17:10:24.018Z moneyman:notifier 0 transactions scraped.
+2026-02-12T17:19:10.084Z moneyman:scraper Browser created, starting to scrape 0 accounts
+2026-02-12T17:19:10.084Z moneyman:scraper scraping ended, total duration: 0.3s
+2026-02-12T17:19:10.084Z moneyman:main Status changed { status: [], totalTime: 0.2856544560000002 }
+2026-02-12T17:19:10.084Z moneyman:scraper closing browser
+2026-02-12T17:19:10.163Z moneyman:scraper { accounts: 0, transactions: 0 }
+2026-02-12T17:19:10.163Z moneyman:main Scraping ended
+2026-02-12T17:19:10.163Z moneyman:notifier 0 transactions scraped.
 
 Accounts updated:
 	😶 None
-2026-02-12T17:10:24.022Z moneyman:notifier No transactions found, skipping save
-2026-02-12T17:10:24.023Z moneyman:failureScreenshot Sending failure screenshots { photos: [] }
-2026-02-12T17:10:24.023Z moneyman:notifier Sending photos { photos: [] }
-2026-02-12T17:10:24.024Z moneyman:domain-security No domains recorded
-2026-02-12T17:10:24.024Z moneyman:runner-metadata Used domains: {}
-2026-02-12T17:10:24.025Z moneyman:bot Error: ENXIO: no such device or address, open '/dev/tty'
-    at writeFileSync (node:fs:2380:20)
+2026-02-12T17:19:10.168Z moneyman:notifier No transactions found, skipping save
+2026-02-12T17:19:10.169Z moneyman:failureScreenshot Sending failure screenshots { photos: [] }
+2026-02-12T17:19:10.169Z moneyman:notifier Sending photos { photos: [] }
+2026-02-12T17:19:10.169Z moneyman:domain-security No domains recorded
+2026-02-12T17:19:10.170Z moneyman:runner-metadata Used domains: {}
+2026-02-12T17:19:10.171Z moneyman:bot Error: ENXIO: no such device or address, open '/dev/tty'
+    at writeFileSync (node:fs:2427:20)
     at logToPublicLog (/home/runner/work/moneyman/moneyman/src/utils/logger.ts:54:9)
     at runWithStorage (/home/runner/work/moneyman/moneyman/src/bot/index.ts:47:3)
     at async run (/home/runner/work/moneyman/moneyman/src/index.ts:69:5)
     at async <anonymous> (/home/runner/work/moneyman/moneyman/src/index.ts:30:1)
 Scraping ended
---- END OF LOG ---
+--- LOG END ---
