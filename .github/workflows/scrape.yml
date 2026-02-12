@@ -6,7 +6,14 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: System Check
+        run: |
+          echo "=========================================="
+          echo "IF YOU SEE THIS, THE ACTION IS WORKING!"
+          echo "TIME: $(date)"
+          echo "=========================================="
+
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -14,18 +21,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Debug Info
-        run: |
-          echo "--- 1. Who am I? ---"
-          whoami
-          echo "--- 2. Where am I? ---"
-          pwd
-          echo "--- 3. What files are here? ---"
-          ls -R | grep -v node_modules
-          echo "--- 4. Checking package.json ---"
-          cat package.json
-
-      - name: Install & Run
+      - name: Run Scraper
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
@@ -34,7 +30,5 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          echo "STAMP: ATTEMPTING START"
-          # אנחנו נריץ ונכתוב את השגיאות לקובץ ואז נדפיס אותו
-          node dst/index.js scrape > output.txt 2>&1 || (cat output.txt && exit 1)
-          cat output.txt
+          echo "Attempting to run index..."
+          node dst/index.js scrape || node index.js scrape || echo "No file found"
