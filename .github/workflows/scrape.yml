@@ -8,9 +8,14 @@ jobs:
     steps:
       - name: Run Scraper
         env:
-          MONEYMAN_CONFIG: ${{ secrets.MONEYMAN_CONFIG }}
+          CONFIG_DATA: ${{ secrets.MONEYMAN_CONFIG }}
         run: |
+          # יצירת קובץ מהסוד בצורה בטוחה
+          echo "$CONFIG_DATA" > config.json
+          
+          # הרצה של דוקר שקורא ישירות מהקובץ
           docker run --rm \
-          -e MONEYMAN_CONFIG \
+          -v $(pwd)/config.json:/app/config.json \
+          -e MONEYMAN_CONFIG_PATH=/app/config.json \
           -e TZ="Asia/Jerusalem" \
           ghcr.io/idokoren/moneyman:latest
