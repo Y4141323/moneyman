@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Moneyman Scraper
+        env:
+          MONEYMAN_CONFIG: ${{ secrets.MONEYMAN_CONFIG }}
         run: |
           docker run --rm \
-          -e MONEYMAN_CONFIG='${{ secrets.MONEYMAN_CONFIG }}' \
+          -e MONEYMAN_CONFIG \
           -e TZ="Asia/Jerusalem" \
           ghcr.io/idokoren/moneyman:latest
