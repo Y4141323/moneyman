@@ -14,21 +14,19 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Install & Build
+        run: |
+          npm install
+          # פקודת בנייה - קריטי אם הפרויקט ב-TypeScript
+          npm run build --if-present 
 
-      - name: Diagnostic & Run
+      - name: Run Scraper
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           DEBUG: "*"
           TZ: "Asia/Jerusalem"
+        # אנחנו ננסה את כל האופציות האפשריות להרצה אחת אחרי השנייה
         run: |
-          echo "--- Content of package.json ---"
-          cat package.json
-          echo "-------------------------------"
-          
-          echo "--- Running Scraper with Verbose Error Logging ---"
-          # הפקודה הזו תנסה להריץ ותשלח כל שגיאה ישירות למסך
-          npm start scrape -- --verbose || node index.js scrape || npm start
+          npm run scrape || npm start || node dist/index.js || node index.js
