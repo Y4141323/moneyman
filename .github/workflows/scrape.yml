@@ -7,19 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Prepare Config Files
+        # השימוש ב-shell python מאפשר לכתוב קבצים ארוכים בלי שגיאות 125
+        shell: python
+        env:
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
-          # יצירת הקבצים בצורה פשוטה
-          cat << 'EOF' > google_key.json
-          ${{ secrets.GOOGLE_KEY }}
-          EOF
-          
-          cat << 'EOF' > accounts.json
-          ${{ secrets.ACCOUNTS_JSON }}
-          EOF
+          import os
+          with open("google_key.json", "w") as f:
+              f.write(os.environ["GOOGLE_KEY"])
+          with open("accounts.json", "w") as f:
+              f.write(os.environ["ACCOUNTS_JSON"])
 
-      - name: Run Moneyman Bot
+      - name: Run Scraper
         run: |
-          # הרצה של הבוט תוך שימוש בקבצים שיצרנו למעלה
           docker run --rm \
           -v $(pwd)/google_key.json:/app/google_key.json \
           -v $(pwd)/accounts.json:/app/accounts.json \
