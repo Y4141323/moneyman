@@ -26,5 +26,11 @@ jobs:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
+          DEBUG: "*" 
           TZ: "Asia/Jerusalem"
-        run: npm start scrape
+        run: |
+          echo "--- Diagnostic Info ---"
+          echo "Checking if package.json exists:"
+          ls package.json
+          echo "-----------------------"
+          npm start scrape
