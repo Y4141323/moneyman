@@ -11,31 +11,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run and Save to File
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Run and Save
         env:
-          MONEYMAN_CONFIG: |
-            {
-              "storage": {
-                "type": "sheets",
-                "spreadsheetId": "${{ secrets.SPREADSHEET_ID }}",
-                "credentials": ${{ secrets.GOOGLE_KEY }}
-              },
-              "accounts": ${{ secrets.ACCOUNTS_JSON }}
-            }
+          # כאן אנחנו משתמשים ב-Secret המאוחד שיצרת
+          MONEYMAN_CONFIG: ${{ secrets.MONEYMAN_CONFIG }}
         run: |
-          echo "--- START OF LOG ---" > results.txt
+          echo "--- LOG START ---" > results.txt
+          echo "Time: $(date)" >> results.txt
+          
           npm install >> results.txt 2>&1
           
-          echo "Executing Scraper..." >> results.txt
-          # הרצה עם הדפסה מלאה לקובץ
-          npx tsx src/index.ts scrape >> results.txt 2>&1 || echo "Run failed" >> results.txt
+          echo "Starting Scrape Execution..." >> results.txt
+          # מריצים ושולחים את כל הפלט (גם שגיאות) לקובץ
+          npx tsx src/index.ts scrape >> results.txt 2>&1 || echo "Process exited with error" >> results.txt
           
-          echo "--- END OF LOG ---" >> results.txt
+          echo "--- LOG END ---" >> results.txt
 
-      - name: Upload Results
+      - name: Push Results
         run: |
           git config --global user.name "Debug Bot"
           git config --global user.email "bot@debug.com"
           git add results.txt
-          git commit -m "New run results" || exit 0
+          git commit -m "Updated debug results" || exit 0
           git push
