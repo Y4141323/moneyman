@@ -14,18 +14,27 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install
-        run: npm install
+      - name: Debug Info
+        run: |
+          echo "--- 1. Who am I? ---"
+          whoami
+          echo "--- 2. Where am I? ---"
+          pwd
+          echo "--- 3. What files are here? ---"
+          ls -R | grep -v node_modules
+          echo "--- 4. Checking package.json ---"
+          cat package.json
 
-      - name: Build
-        run: npm run build --if-present
-
-      - name: Run
+      - name: Install & Run
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           DEBUG: "*"
         run: |
-          echo "Test: I am starting now"
-          node dst/index.js scrape || node index.js scrape || echo "Force failure" && exit 1
+          npm install
+          npm run build --if-present
+          echo "STAMP: ATTEMPTING START"
+          # אנחנו נריץ ונכתוב את השגיאות לקובץ ואז נדפיס אותו
+          node dst/index.js scrape > output.txt 2>&1 || (cat output.txt && exit 1)
+          cat output.txt
