@@ -8,13 +8,26 @@ jobs:
     steps:
       - name: Run Scraper
         env:
-          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
+          # אנחנו עוטפים את הסודות במירכאות בודדות כדי ש-GitHub לא ינסה לפרש אותם
+          ID: ${{ secrets.SPREADSHEET_ID }}
+          G_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACC: ${{ secrets.ACCOUNTS_JSON }}
         run: |
+          # יצירת קבצים בצורה שמתעלמת מתווים מיוחדים
+          cat << 'EOF' > google_key.json
+          ${{ secrets.GOOGLE_KEY }}
+          EOF
+
+          cat << 'EOF' > accounts.json
+          ${{ secrets.ACCOUNTS_JSON }}
+          EOF
+
+          # הרצה של דוקר
           docker run --rm \
-          -e GOOGLE_SPREADSHEET_ID \
-          -e GOOGLE_SERVICE_ACCOUNT_KEY \
-          -e ACCOUNTS_JSON \
-          -e TZ="Asia/Jerusalem" \
+          -v $(pwd)/google_key.json:/app/google_key.json \
+          -v $(pwd)/accounts.json:/app/accounts.json \
+          -e "GOOGLE_SPREADSHEET_ID=$ID" \
+          -e "GOOGLE_SERVICE_ACCOUNT_KEY_PATH=/app/google_key.json" \
+          -e "ACCOUNTS_JSON_PATH=/app/accounts.json" \
+          -e "TZ=Asia/Jerusalem" \
           ghcr.io/idokoren/moneyman:latest
