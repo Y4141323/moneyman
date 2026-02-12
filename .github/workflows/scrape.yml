@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Scraper Directly
+      - name: Diagnostic & Run
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
@@ -25,16 +25,10 @@ jobs:
           DEBUG: "*"
           TZ: "Asia/Jerusalem"
         run: |
-          # בדיקה מה הקובץ הראשי ב-package.json ומריצים אותו
-          node -e "const pkg = require('./package.json'); console.log('Starting script:', pkg.main || 'dist/index.js')"
+          echo "--- Content of package.json ---"
+          cat package.json
+          echo "-------------------------------"
           
-          # נסיון הרצה ישיר של הקובץ (לרוב זה index.js בתיקיית dist או lib)
-          if [ -f "./dist/index.js" ]; then
-            node dist/index.js scrape
-          elif [ -f "./index.js" ]; then
-            node index.js scrape
-          else
-            echo "Searching for main file..."
-            find . -name "index.js" -not -path "*/node_modules/*"
-            npm start scrape
-          fi
+          echo "--- Running Scraper with Verbose Error Logging ---"
+          # הפקודה הזו תנסה להריץ ותשלח כל שגיאה ישירות למסך
+          npm start scrape -- --verbose || node index.js scrape || npm start
