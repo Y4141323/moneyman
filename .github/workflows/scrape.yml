@@ -6,16 +6,10 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Scraper
+      - name: Run Moneyman
+        uses: docker://idokoren/moneyman:latest
         env:
-          # אנחנו מעבירים את הסודות כמשתנים, לא כקבצים, כדי למנוע 125
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-        run: |
-          docker run --rm \
-          -e GOOGLE_SPREADSHEET_ID \
-          -e GOOGLE_SERVICE_ACCOUNT_KEY \
-          -e ACCOUNTS_JSON \
-          -e TZ="Asia/Jerusalem" \
-          ghcr.io/idokoren/moneyman:latest
+          TZ: "Asia/Jerusalem"
