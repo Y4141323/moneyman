@@ -3,12 +3,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_secrets:
+  scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Basic Check
+      - name: Prepare Config Files
         run: |
-          echo "Starting test..."
-          if [ -z "${{ secrets.SPREADSHEET_ID }}" ]; then echo "ID is missing"; else echo "ID exists"; fi
-          if [ -z "${{ secrets.GOOGLE_KEY }}" ]; then echo "Key is missing"; else echo "Key exists"; fi
-          echo "Test finished."
+          # יצירת הקבצים בצורה פשוטה
+          cat << 'EOF' > google_key.json
+          ${{ secrets.GOOGLE_KEY }}
+          EOF
+          
+          cat << 'EOF' > accounts.json
+          ${{ secrets.ACCOUNTS_JSON }}
+          EOF
+
+      - name: Run Moneyman Bot
+        run: |
+          # הרצה של הבוט תוך שימוש בקבצים שיצרנו למעלה
+          docker run --rm \
+          -v $(pwd)/google_key.json:/app/google_key.json \
+          -v $(pwd)/accounts.json:/app/accounts.json \
+          -e "GOOGLE_SPREADSHEET_ID=${{ secrets.SPREADSHEET_ID }}" \
+          -e "GOOGLE_SERVICE_ACCOUNT_KEY_PATH=/app/google_key.json" \
+          -e "ACCOUNTS_JSON_PATH=/app/accounts.json" \
+          -e "TZ=Asia/Jerusalem" \
+          idokoren/moneyman:latest
