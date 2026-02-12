@@ -6,13 +6,6 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: System Check
-        run: |
-          echo "=========================================="
-          echo "IF YOU SEE THIS, THE ACTION IS WORKING!"
-          echo "TIME: $(date)"
-          echo "=========================================="
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -20,6 +13,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: 'npm'
+
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build --if-present
 
       - name: Run Scraper
         env:
@@ -27,8 +26,13 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           DEBUG: "*"
+          TZ: "Asia/Jerusalem"
+        # הוספנו 'npx' ושינינו את צורת הקריאה כדי להכריח פלט
         run: |
-          npm install
-          npm run build --if-present
-          echo "Attempting to run index..."
-          node dst/index.js scrape || node index.js scrape || echo "No file found"
+          echo "Checking if dst/index.js exists before running..."
+          ls -l dst/index.js || echo "File not found in dst"
+          
+          echo "--- Starting Execution ---"
+          node --input-type=module -e "import('./dst/index.js').then(m => console.log('Module loaded')).catch(err => console.error(err))"
+          
+          npx tsx src/index.ts scrape || node dst/index.js scrape || npm start
