@@ -1,0 +1,193 @@
+--- START OF LOG ---
+Time: Thu Feb 12 16:56:00 UTC 2026
+Files in folder:
+.:
+Dockerfile
+LICENSE
+README.md
+config.example.jsonc
+docker-compose.yml
+docker-entrypoint.sh
+jest.config.js
+package-lock.json
+package.json
+patches
+results.txt
+src
+tsconfig.json
+
+./patches:
+ky+1.10.0.patch
+
+./src:
+bot
+config.schema.ts
+config.test.ts
+config.ts
+index.ts
+runnerMetadata.test.ts
+runnerMetadata.ts
+scraper
+scripts
+security
+test-scraper-access.ts
+types.ts
+utils
+
+./src/bot:
+__snapshots__
+deprecationManager.test.ts
+deprecationManager.ts
+index.ts
+messages.test.ts
+messages.ts
+notifier.ts
+saveStats.ts
+storage
+transactionTableRow.test.ts
+transactionTableRow.ts
+
+./src/bot/__snapshots__:
+messages.test.ts.snap
+
+./src/bot/storage:
+__snapshots__
+actual.ts
+azure-data-explorer.ts
+buxfer.ts
+index.ts
+json.ts
+sheets.test.ts
+sheets.ts
+sql.test.ts
+sql.ts
+telegram.test.ts
+telegram.ts
+utils.test.ts
+utils.ts
+web-post.ts
+ynab.ts
+
+./src/bot/storage/__snapshots__:
+utils.test.ts.snap
+
+./src/scraper:
+browser.ts
+cloudflareSolver.ts
+index.ts
+otp.test.ts
+otp.ts
+scrape.test.ts
+scrape.ts
+
+./src/scripts:
+verify-config.ts
+
+./src/security:
+__snapshots__
+domainRules.test.ts
+domainRules.ts
+domains.test.ts
+domains.ts
+
+./src/security/__snapshots__:
+domains.test.ts.snap
+
+./src/utils:
+Timer.ts
+asyncContext.ts
+collections.ts
+currency.test.ts
+currency.ts
+failureScreenshot.ts
+jsonc.ts
+logger.ts
+promises.test.ts
+promises.ts
+secure-log.ts
+tests.ts
+utils.ts
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'moneyman@1.0.0',
+npm warn EBADENGINE   required: { node: '>=24' },
+npm warn EBADENGINE   current: { node: 'v20.20.0', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'israeli-bank-scrapers@6.7.1',
+npm warn EBADENGINE   required: { node: '>= 22.12.0' },
+npm warn EBADENGINE   current: { node: 'v20.20.0', npm: '10.8.2' }
+npm warn EBADENGINE }
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+
+> moneyman@1.0.0 postinstall
+> patch-package
+
+patch-package 8.0.1
+Applying patches...
+ky@1.10.0 ✔
+
+added 653 packages, and audited 654 packages in 22s
+
+94 packages are looking for funding
+  run `npm fund` for details
+
+1 high severity vulnerability
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+npm warn exec The following package was not found and will be installed: tsx@4.21.0
+sendConfigError using MONEYMAN_CONFIG_PATH
+Failed to send config error to telegram
+No configuration found. Please provide MONEYMAN_CONFIG or MONEYMAN_CONFIG_PATH environment variable.
+No Telegram bot info, status and errors will not be sent
+Starting...
+2026-02-12T16:56:35.546Z moneyman:main Running with storage
+2026-02-12T16:56:35.546Z moneyman:notifier Starting...
+2026-02-12T16:56:35.546Z moneyman:main About to start
+2026-02-12T16:56:35.546Z moneyman:main Starting to scrape
+2026-02-12T16:56:35.547Z moneyman:scraper scraping 0 accounts
+2026-02-12T16:56:35.547Z moneyman:scraper start date 2026-02-02T16:56:34.872Z
+2026-02-12T16:56:35.547Z moneyman:scraper months to scrap: 1
+2026-02-12T16:56:35.547Z moneyman:scraper Creating a browser
+2026-02-12T16:56:35.547Z moneyman:browser Creating browser {
+  args: [ '--disable-dev-shm-usage', '--no-sandbox' ],
+  executablePath: undefined
+}
+2026-02-12T16:56:35.683Z moneyman:main External IP info: {
+  ip: '172.215.209.98',
+  city: 'Cheyenne',
+  region: 'Wyoming',
+  country: 'US',
+  loc: '41.1400,-104.8203',
+  org: 'AS8075 Microsoft Corporation',
+  postal: '82002',
+  timezone: 'America/Denver',
+  readme: 'https://ipinfo.io/missingauth'
+}
+2026-02-12T16:56:36.986Z moneyman:scraper Browser created, starting to scrape 0 accounts
+2026-02-12T16:56:36.986Z moneyman:scraper scraping ended, total duration: 1.4s
+2026-02-12T16:56:36.986Z moneyman:main Status changed { status: [], totalTime: 1.4393694069999996 }
+2026-02-12T16:56:36.986Z moneyman:scraper closing browser
+2026-02-12T16:56:37.155Z moneyman:scraper { accounts: 0, transactions: 0 }
+2026-02-12T16:56:37.155Z moneyman:main Scraping ended
+2026-02-12T16:56:37.156Z moneyman:notifier 0 transactions scraped.
+
+Accounts updated:
+	😶 None
+2026-02-12T16:56:37.160Z moneyman:notifier No transactions found, skipping save
+2026-02-12T16:56:37.161Z moneyman:failureScreenshot Sending failure screenshots { photos: [] }
+2026-02-12T16:56:37.161Z moneyman:notifier Sending photos { photos: [] }
+2026-02-12T16:56:37.162Z moneyman:domain-security No domains recorded
+2026-02-12T16:56:37.162Z moneyman:runner-metadata Used domains: {}
+2026-02-12T16:56:37.163Z moneyman:bot Error: ENXIO: no such device or address, open '/dev/tty'
+    at writeFileSync (node:fs:2380:20)
+    at logToPublicLog (/home/runner/work/moneyman/moneyman/src/utils/logger.ts:54:9)
+    at runWithStorage (/home/runner/work/moneyman/moneyman/src/bot/index.ts:47:3)
+    at async run (/home/runner/work/moneyman/moneyman/src/index.ts:69:5)
+    at async <anonymous> (/home/runner/work/moneyman/moneyman/src/index.ts:30:1)
+Scraping ended
+--- END OF LOG ---
