@@ -6,46 +6,26 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Install
         run: npm install
 
-      - name: Build Project
-        run: |
-          echo "Starting Build..."
-          npm run build --if-present
-          echo "Build finished."
+      - name: Build
+        run: npm run build --if-present
 
-      - name: Run Scraper
+      - name: Run
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           DEBUG: "*"
-          TZ: "Asia/Jerusalem"
         run: |
-          echo "--- 1. Checking if dst/index.js exists ---"
-          if [ -f "dst/index.js" ]; then
-            echo "File found! Running now..."
-            node dst/index.js scrape
-          else
-            echo "--- 2. Could not find dst/index.js. Checking root folder ---"
-            ls -F
-            if [ -f "index.js" ]; then
-              echo "Found index.js in root. Running..."
-              node index.js scrape
-            else
-              echo "--- 3. CRITICAL ERROR: Could not find any index.js file ---"
-              echo "Searching for all .js files in the project:"
-              find . -name "*.js" -not -path "./node_modules/*"
-              exit 1
-            fi
-          fi
+          echo "Test: I am starting now"
+          node dst/index.js scrape || node index.js scrape || echo "Force failure" && exit 1
