@@ -7,15 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Scraper
-        env:
-          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
-          # שימוש בכתובת הרשמית מה-Docker Hub
+          # 1. יצירת הקבצים מה-Base64 בנפרד
+          echo "${{ secrets.GOOGLE_KEY }}" | base64 --decode > google_key.json
+          echo "${{ secrets.ACCOUNTS_JSON }}" | base64 --decode > accounts.json
+
+          # 2. הרצת הדוקר בצורה שלא נוגעת בסודות ישירות
           docker run --rm \
-          -e GOOGLE_SPREADSHEET_ID \
-          -e GOOGLE_SERVICE_ACCOUNT_KEY \
-          -e ACCOUNTS_JSON \
-          -e TZ="Asia/Jerusalem" \
+          -v $(pwd)/google_key.json:/app/google_key.json \
+          -v $(pwd)/accounts.json:/app/accounts.json \
+          -e "GOOGLE_SPREADSHEET_ID=${{ secrets.SPREADSHEET_ID }}" \
+          -e "GOOGLE_SERVICE_ACCOUNT_KEY_PATH=/app/google_key.json" \
+          -e "ACCOUNTS_JSON_PATH=/app/accounts.json" \
+          -e "TZ=Asia/Jerusalem" \
           idokoren/moneyman:latest
