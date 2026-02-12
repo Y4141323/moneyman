@@ -8,14 +8,13 @@ jobs:
     steps:
       - name: Run Scraper
         env:
-          CONFIG_DATA: ${{ secrets.MONEYMAN_CONFIG }}
+          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
-          # יצירת קובץ מהסוד בצורה בטוחה
-          echo "$CONFIG_DATA" > config.json
-          
-          # הרצה של דוקר שקורא ישירות מהקובץ
           docker run --rm \
-          -v $(pwd)/config.json:/app/config.json \
-          -e MONEYMAN_CONFIG_PATH=/app/config.json \
+          -e GOOGLE_SPREADSHEET_ID \
+          -e GOOGLE_SERVICE_ACCOUNT_KEY \
+          -e ACCOUNTS_JSON \
           -e TZ="Asia/Jerusalem" \
           ghcr.io/idokoren/moneyman:latest
