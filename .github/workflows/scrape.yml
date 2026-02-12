@@ -6,20 +6,21 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
+      - name: Create Files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            // יצירת הקבצים ישירות דרך קוד (הכי בטוח מפני תווים מיוחדים)
+            fs.writeFileSync('google_key.json', process.env.GOOGLE_KEY);
+            fs.writeFileSync('accounts.json', process.env.ACCOUNTS_JSON);
+        env:
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
+
       - name: Run Scraper
         run: |
-          # 1. פענוח
-          echo "${{ secrets.GOOGLE_KEY }}" | base64 --decode > google_key.json
-          echo "${{ secrets.ACCOUNTS_JSON }}" | base64 --decode > accounts.json
-
-          # 2. בדיקת התחלת הקבצים (זה יופיע ב-Log!)
-          echo "First 10 characters of Google Key:"
-          head -c 10 google_key.json
-          echo -e "\nFirst 10 characters of Accounts JSON:"
-          head -c 10 accounts.json
-          echo -e "\n--- End of check ---"
-
-          # 3. הרצה
+          echo "Starting Docker..."
           docker run --rm \
           -v $(pwd)/google_key.json:/app/google_key.json \
           -v $(pwd)/accounts.json:/app/accounts.json \
