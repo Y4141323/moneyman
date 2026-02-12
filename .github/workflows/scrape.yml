@@ -6,26 +6,16 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Prepare Config Files
-        # השימוש ב-shell python מאפשר לכתוב קבצים ארוכים בלי שגיאות 125
-        shell: python
+      - name: Run Scraper
         env:
-          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          # אנחנו מעבירים את הסודות כמשתנים, לא כקבצים, כדי למנוע 125
+          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
-          import os
-          with open("google_key.json", "w") as f:
-              f.write(os.environ["GOOGLE_KEY"])
-          with open("accounts.json", "w") as f:
-              f.write(os.environ["ACCOUNTS_JSON"])
-
-      - name: Run Scraper
-        run: |
           docker run --rm \
-          -v $(pwd)/google_key.json:/app/google_key.json \
-          -v $(pwd)/accounts.json:/app/accounts.json \
-          -e "GOOGLE_SPREADSHEET_ID=${{ secrets.SPREADSHEET_ID }}" \
-          -e "GOOGLE_SERVICE_ACCOUNT_KEY_PATH=/app/google_key.json" \
-          -e "ACCOUNTS_JSON_PATH=/app/accounts.json" \
-          -e "TZ=Asia/Jerusalem" \
-          idokoren/moneyman:latest
+          -e GOOGLE_SPREADSHEET_ID \
+          -e GOOGLE_SERVICE_ACCOUNT_KEY \
+          -e ACCOUNTS_JSON \
+          -e TZ="Asia/Jerusalem" \
+          ghcr.io/idokoren/moneyman:latest
