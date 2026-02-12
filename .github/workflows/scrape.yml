@@ -1,4 +1,4 @@
-name: Scrape
+name: Real Scrape
 on:
   workflow_dispatch:
 
@@ -6,32 +6,31 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '24' # מעדכנים לגרסה שהבוט דורש
 
-      - name: Install All
-        run: |
-          npm install
-          # התקנת כלי עזר להרצה ישירה של TypeScript
-          npm install -g tsx 
+      - name: Install
+        run: npm install
 
-      - name: Force Run
+      - name: Run
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-          DEBUG: "*"
-          TZ: "Asia/Jerusalem"
+          # אנחנו "מכריחים" את הקוד לקרוא את זה כקובץ הגדרות
+          MONEYMAN_CONFIG: |
+            {
+              "storage": {
+                "type": "sheets",
+                "spreadsheetId": "${{ secrets.SPREADSHEET_ID }}",
+                "credentials": ${{ secrets.GOOGLE_KEY }}
+              },
+              "accounts": ${{ secrets.ACCOUNTS_JSON }}
+            }
         run: |
-          echo "Checking environment..."
-          # בדיקה אם ה-Secrets בכלל קיימים (בלי להדפיס אותם!)
-          if [ -z "$ACCOUNTS_JSON" ]; then echo "WARNING: ACCOUNTS_JSON is empty"; fi
-          
-          echo "Starting Scraper with TSX..."
-          # הרצה ישירה מקובץ המקור - זה עוקף את בעיית ה-build והתיקיות הריקות
-          npx tsx src/index.ts scrape || npx tsx index.ts scrape || node dst/index.js scrape
+          # הרצה ישירה עם הגדרות מוזרקות
+          npx tsx src/index.ts scrape
