@@ -8,11 +8,15 @@ jobs:
     steps:
       - name: Run Scraper
         run: |
-          # פענוח הסודות לקבצים זמניים
+          # פענוח ובדיקה אם הסודות בכלל קיימים
           echo "${{ secrets.GOOGLE_KEY }}" | base64 --decode > google_key.json
           echo "${{ secrets.ACCOUNTS_JSON }}" | base64 --decode > accounts.json
 
-          # הרצה בטוחה של דוקר
+          # בדיקה ויזואלית לתוך ה-Log (כדי לראות שהקבצים לא ריקים)
+          echo "Checking files size..."
+          ls -l *.json
+
+          # הרצה של הבוט עם הפניה לקבצים
           docker run --rm \
           -v $(pwd)/google_key.json:/app/google_key.json \
           -v $(pwd)/accounts.json:/app/accounts.json \
