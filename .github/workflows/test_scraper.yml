@@ -1,15 +1,39 @@
-name: Test Scraper NEW
+name: Emergency Debug
 on:
   workflow_dispatch:
 
 jobs:
-  test_job:
+  debug_job:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Kill and Speak
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run and Save to File
+        env:
+          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
-          echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >&2
-          echo "CRITICAL CHECK: IF YOU SEE THIS, LOGS WORK" >&2
-          echo "TIME: $(date)" >&2
-          echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >&2
-          exit 1 # זה יכריח את השלב להיות אדום ולהציג את הטקסט
+          echo "--- START OF LOG ---" > results.txt
+          echo "Time: $(date)" >> results.txt
+          
+          # בדיקת קבצים
+          echo "Files in folder:" >> results.txt
+          ls -R >> results.txt 2>&1
+          
+          # ניסיון הרצה
+          npm install >> results.txt 2>&1
+          npx tsx src/index.ts scrape >> results.txt 2>&1 || echo "Run failed" >> results.txt
+          
+          echo "--- END OF LOG ---" >> results.txt
+
+      - name: Upload Results to Repo
+        run: |
+          git config --global user.name "Debug Bot"
+          git config --global user.email "bot@debug.com"
+          git add results.txt
+          git commit -m "New debug results"
+          git push
