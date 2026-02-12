@@ -13,26 +13,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'npm'
 
-      - name: Install & Build
+      - name: Install All
         run: |
           npm install
-          npm run build --if-present
+          # התקנת כלי עזר להרצה ישירה של TypeScript
+          npm install -g tsx 
 
-      - name: Run Scraper
+      - name: Force Run
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           DEBUG: "*"
           TZ: "Asia/Jerusalem"
-        # הוספנו 'npx' ושינינו את צורת הקריאה כדי להכריח פלט
         run: |
-          echo "Checking if dst/index.js exists before running..."
-          ls -l dst/index.js || echo "File not found in dst"
+          echo "Checking environment..."
+          # בדיקה אם ה-Secrets בכלל קיימים (בלי להדפיס אותם!)
+          if [ -z "$ACCOUNTS_JSON" ]; then echo "WARNING: ACCOUNTS_JSON is empty"; fi
           
-          echo "--- Starting Execution ---"
-          node --input-type=module -e "import('./dst/index.js').then(m => console.log('Module loaded')).catch(err => console.error(err))"
-          
-          npx tsx src/index.ts scrape || node dst/index.js scrape || npm start
+          echo "Starting Scraper with TSX..."
+          # הרצה ישירה מקובץ המקור - זה עוקף את בעיית ה-build והתיקיות הריקות
+          npx tsx src/index.ts scrape || npx tsx index.ts scrape || node dst/index.js scrape
