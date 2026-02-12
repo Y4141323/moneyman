@@ -13,27 +13,29 @@ jobs:
 
       - name: Run and Save to File
         env:
-          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
+          MONEYMAN_CONFIG: |
+            {
+              "storage": {
+                "type": "sheets",
+                "spreadsheetId": "${{ secrets.SPREADSHEET_ID }}",
+                "credentials": ${{ secrets.GOOGLE_KEY }}
+              },
+              "accounts": ${{ secrets.ACCOUNTS_JSON }}
+            }
         run: |
           echo "--- START OF LOG ---" > results.txt
-          echo "Time: $(date)" >> results.txt
-          
-          # בדיקת קבצים
-          echo "Files in folder:" >> results.txt
-          ls -R >> results.txt 2>&1
-          
-          # ניסיון הרצה
           npm install >> results.txt 2>&1
+          
+          echo "Executing Scraper..." >> results.txt
+          # הרצה עם הדפסה מלאה לקובץ
           npx tsx src/index.ts scrape >> results.txt 2>&1 || echo "Run failed" >> results.txt
           
           echo "--- END OF LOG ---" >> results.txt
 
-      - name: Upload Results to Repo
+      - name: Upload Results
         run: |
           git config --global user.name "Debug Bot"
           git config --global user.email "bot@debug.com"
           git add results.txt
-          git commit -m "New debug results"
+          git commit -m "New run results" || exit 0
           git push
