@@ -1,4 +1,4 @@
-name: Emergency Debug
+"name: Emergency Debug
 on:
   workflow_dispatch:
 
@@ -17,25 +17,55 @@ jobs:
           node-version: '24'
 
       - name: Run and Save
-        env:
-          # כאן אנחנו משתמשים ב-Secret המאוחד שיצרת
-          MONEYMAN_CONFIG: ${{ secrets.MONEYMAN_CONFIG }}
         run: |
-          echo "--- LOG START ---" > results.txt
-          echo "Time: $(date)" >> results.txt
-          
+          echo ""--- LOG START ---"" > results.txt
           npm install >> results.txt 2>&1
           
-          echo "Starting Scrape Execution..." >> results.txt
-          # מריצים ושולחים את כל הפלט (גם שגיאות) לקובץ
-          npx tsx src/index.ts scrape >> results.txt 2>&1 || echo "Process exited with error" >> results.txt
+          echo ""Starting Scrape Execution..."" >> results.txt
           
-          echo "--- LOG END ---" >> results.txt
+          # אנחנו מגדירים את ה-JSON ישירות כאן בתוך הפקודה
+          export MONEYMAN_CONFIG='{
+            ""storage"": {
+              ""type"": ""sheets"",
+              ""spreadsheetId"": ""1M-eGf3SyNa1dwRQCWeeCA_vJGdyH7S4tzbpvqkHJRvY"",
+              ""credentials"": {
+                ""type"": ""service_account"",
+                ""project_id"": ""..."",
+                ""private_key"": {
+  ""type"": ""service_account"",
+  ""project_id"": ""omega-granite-487210-p8"",
+  ""private_key_id"": ""a23e863cd26afb580b287be1a38d60f79989cad2"",
+  ""private_key"": ""-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/rtZXbdBsMEp/\nmbs+dZfsWCdPu7QzLmoH+ISxzdFi83D6uVN675i4lyArQEOP+IuSssdJbfcje8Qi\nX92ZohDDts+MLNelYfMCekKxSLbJTglBAoQS+2IH442Lt/6uElCfQga8y7pw/yDv\nT/pa21i3fVfY/LL2TcSe6KO5PVUGPDXfUE6MB8OBegRM1KjRanlG+Y7YGMIoGbzz\nzgGNI+riOH/kJ1P9efJWMcSYZTZ5BDbaM3faQCL6Q/pidJEJfWhh789T4Nhvu/5t\npplK9p5LFrw8qgWXdxzSdJYV4ILX+JVpuWBX1zZRB+7FnlqISnD6Rva8r1XYh2NR\nf35fcFuDAgMBAAECggEAIzhy9fmdlGODLNMIjr94vNqtzn7E66qZnQFTEICq+q2U\nkt0+s5YWz8QlCw1x3KBktP3YlGt6P7DcJxzKURJwViXfGPicXy0SQ+BHJOAhhfeq\nx6E4t2wtZRmwxn12dHG1Eq5FIqekiGK4oIBnlg47zOthGuPD1nIPsMs6Wi0k1FIm\nfDc6gdRPvuJ7hrGK5hBbdNR6YJUaPFJWY4iWuXY5f1mm8gfBfhBh4WkC+QJmDIBt\nOTB5+MU9Lr3X92LuU6jszU25ooGXSgCdNxniSVwXJA4tFGkdRHuObT9njOCECTe7\n8f7zMaLUdY1BtwKqRWJUbL2EXJUfOtc/TlVLTpap8QKBgQDjlj4lnbKwrt+h4Xfk\nQcaEnerZrY8YLr4C5f7Nt2cU57iBjChabQuPha3WSjh6obu/gnBtXnzJh00MYESu\nU+SKj8P6j709KEYF5MlkD3anmldAaC8Dnu3HDZHtoO1B0KOTJ2Hr824li6ZWdQk+\nehIRaRbUxBQ5w4EGDwqfrCZjZwKBgQDXnRehG0GcAJo/h50w56sQ/prSJAsn7Jc8\nliSzTWe8u2EIxHGyu7ePdnGOFkbx3Kw4CrnVGNc/rwU+QY/loWrEbtaa+r+b4g7L\n8H/PKcML0ZYW9xX9+5SKWLk6is2QVIHBYfSz8ad6zWxTN7ORUZkl4+LwemyDnSgp\nscFo4sgxhQKBgHdTvT4H0zskVYkRKMV7X1UFX6/GenKZf3MRmGnQMbIaVPlHvZi7\n+AXGd4EV5UsXJdOh1sThd9hKorFMgHZO8lNcUcs8NmKsjRpl/NoD6ZizKfBRL+Vc\nHRvzF4JakEuj00BCs+r89dGlyQ8nyjMB2hta2Geyb1BiG3JLzKwvnOkdAoGBAIYQ\nydaFCiCkR0TlYBo+kqG4ji/H9Z/XfppPiXZr1OsHX+iBrWjDS/nKXgVJWMeevP8D\nvFUCYyTYANybC4xu9+I4QPyQmX+l6ilo2y/G+d5pbXfOH0CTo+L6FAKQuAzcXuoN\nrIgO5GJ5RLfh1KexIxbqQfvhQ4P6vjResLI1AOG5AoGAUp9PdsHFObhkePthUrLz\nOEHeD/spDDnviUdBov4uECMDYWAc5vmYBMxPGg/AG1H6Y21ox6ASXPWpbQZLtvp8\n4V7eINN6VEyCoG/hDgxYWIaONOH1E2AV2S9Sa1zRO2QRFG8dwcoiLaiquMiiztAY\nu841HC8c679ml8JhRww5kLo=\n-----END PRIVATE KEY-----\n"",
+  ""client_email"": ""bot-296@omega-granite-487210-p8.iam.gserviceaccount.com"",
+  ""client_id"": ""105871116112167601833"",
+  ""auth_uri"": ""https://accounts.google.com/o/oauth2/auth"",
+  ""token_uri"": ""https://oauth2.googleapis.com/token"",
+  ""auth_provider_x509_cert_url"": ""https://www.googleapis.com/oauth2/v1/certs"",
+  ""client_x509_cert_url"": ""https://www.googleapis.com/robot/v1/metadata/x509/bot-296%40omega-granite-487210-p8.iam.gserviceaccount.com"",
+  ""universe_domain"": ""googleapis.com""
+}
+
+              }
+            },
+            ""accounts"": [
+              {
+                ""companyId"": ""fibi"",
+                ""id"": ""test"",
+                ""credentials"": {
+                  ""userCode"": ""im39mcw"",
+                  ""password"": ""aq0aq1""
+                }
+              }
+            ]
+          }'
+
+          npx tsx src/index.ts scrape >> results.txt 2>&1 || echo ""Process failed"" >> results.txt
+          echo ""--- LOG END ---"" >> results.txt
 
       - name: Push Results
         run: |
-          git config --global user.name "Debug Bot"
-          git config --global user.email "bot@debug.com"
+          git config --global user.name ""Debug Bot""
+          git config --global user.email ""bot@debug.com""
           git add results.txt
-          git commit -m "Updated debug results" || exit 0
-          git push
+          git commit -m ""Testing hardcoded config"" || exit 0
+          git push"
