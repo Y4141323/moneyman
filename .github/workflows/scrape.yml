@@ -9,15 +9,17 @@ jobs:
       - name: Checkout Moneyman Code
         uses: actions/checkout@v4
         with:
-          repository: 'idokoren/moneyman' # מוריד את הקוד המקורי
+          # שימוש בכתובת המאגר הרשמית והציבורית
+          repository: 'ynonp/moneyman' 
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # מתקין את הסביבה הדרושה
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install # מתקין את הבוט
+        run: npm ci || npm install
 
       - name: Run Scraper
         env:
@@ -25,4 +27,4 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           TZ: "Asia/Jerusalem"
-        run: npm start scrape # מפעיל את הבוט ישירות
+        run: npm start scrape
