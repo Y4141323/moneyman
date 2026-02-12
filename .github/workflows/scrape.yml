@@ -3,29 +3,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  scrape:
+  test_secrets:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Files
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            // יצירת הקבצים ישירות דרך קוד (הכי בטוח מפני תווים מיוחדים)
-            fs.writeFileSync('google_key.json', process.env.GOOGLE_KEY);
-            fs.writeFileSync('accounts.json', process.env.ACCOUNTS_JSON);
-        env:
-          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-
-      - name: Run Scraper
+      - name: Basic Check
         run: |
-          echo "Starting Docker..."
-          docker run --rm \
-          -v $(pwd)/google_key.json:/app/google_key.json \
-          -v $(pwd)/accounts.json:/app/accounts.json \
-          -e "GOOGLE_SPREADSHEET_ID=${{ secrets.SPREADSHEET_ID }}" \
-          -e "GOOGLE_SERVICE_ACCOUNT_KEY_PATH=/app/google_key.json" \
-          -e "ACCOUNTS_JSON_PATH=/app/accounts.json" \
-          -e "TZ=Asia/Jerusalem" \
-          idokoren/moneyman:latest
+          echo "Starting test..."
+          if [ -z "${{ secrets.SPREADSHEET_ID }}" ]; then echo "ID is missing"; else echo "ID exists"; fi
+          if [ -z "${{ secrets.GOOGLE_KEY }}" ]; then echo "Key is missing"; else echo "Key exists"; fi
+          echo "Test finished."
