@@ -13,24 +13,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Project
-        run: npm run build --if-present
-
-      - name: Run Scraper
+      - name: Run Scraper Directly
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-          DEBUG: "*" 
+          DEBUG: "*"
           TZ: "Asia/Jerusalem"
         run: |
-          echo "--- Diagnostic Info ---"
-          echo "Checking if package.json exists:"
-          ls package.json
-          echo "-----------------------"
-          npm start scrape
+          # בדיקה מה הקובץ הראשי ב-package.json ומריצים אותו
+          node -e "const pkg = require('./package.json'); console.log('Starting script:', pkg.main || 'dist/index.js')"
+          
+          # נסיון הרצה ישיר של הקובץ (לרוב זה index.js בתיקיית dist או lib)
+          if [ -f "./dist/index.js" ]; then
+            node dist/index.js scrape
+          elif [ -f "./index.js" ]; then
+            node index.js scrape
+          else
+            echo "Searching for main file..."
+            find . -name "index.js" -not -path "*/node_modules/*"
+            npm start scrape
+          fi
