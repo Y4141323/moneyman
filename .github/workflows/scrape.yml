@@ -25,11 +25,8 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - id: normalize-repository-name
-        run: echo "repository=idokoren/moneyman" >> $GITHUB_OUTPUT
-
       - id: set-container-image
-        run: echo "image=${{ env.REGISTRY }}/${{ steps.normalize-repository-name.outputs.repository }}:${{ github.event.inputs.containerTag || 'latest' }}" >> $GITHUB_OUTPUT
+        run: echo "image=ghcr.io/idokoren/moneyman:latest" >> $GITHUB_OUTPUT
 
       - name: Pull container image
         run: docker pull ${{ steps.set-container-image.outputs.image }}
