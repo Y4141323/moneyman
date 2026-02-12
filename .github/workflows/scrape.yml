@@ -6,11 +6,23 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Moneyman
-        # זו הכתובת המעודכנת ביותר ב-Docker Hub
-        uses: docker://idokoren/moneyman:latest
+      - name: Checkout Moneyman Code
+        uses: actions/checkout@v4
+        with:
+          repository: 'idokoren/moneyman' # מוריד את הקוד המקורי
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # מתקין את הסביבה הדרושה
+
+      - name: Install Dependencies
+        run: npm install # מתקין את הבוט
+
+      - name: Run Scraper
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           TZ: "Asia/Jerusalem"
+        run: npm start scrape # מפעיל את הבוט ישירות
