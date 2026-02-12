@@ -8,13 +8,9 @@ jobs:
     steps:
       - name: Run Scraper
         env:
-          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
+          MONEYMAN_CONFIG: ${{ secrets.MONEYMAN_CONFIG }}
         run: |
           docker run --rm \
-          -e GOOGLE_SPREADSHEET_ID \
-          -e GOOGLE_SERVICE_ACCOUNT_KEY \
-          -e ACCOUNTS_JSON \
+          -e MONEYMAN_CONFIG \
           -e TZ="Asia/Jerusalem" \
           ghcr.io/idokoren/moneyman:latest
