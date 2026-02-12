@@ -12,21 +12,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # מעודכן לדרישות הפרויקט שלך
+          cache: 'npm'
 
-      - name: Install & Build
-        run: |
-          npm install
-          # פקודת בנייה - קריטי אם הפרויקט ב-TypeScript
-          npm run build --if-present 
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build # בונה את תיקיית dst/ הנחוצה
 
       - name: Run Scraper
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-          DEBUG: "*"
+          DEBUG: "scraper*" # מציג לוגים ספציפיים של הסריקה
           TZ: "Asia/Jerusalem"
-        # אנחנו ננסה את כל האופציות האפשריות להרצה אחת אחרי השנייה
-        run: |
-          npm run scrape || npm start || node dist/index.js || node index.js
+        run: npm start # מפעיל את node dst/index.js
