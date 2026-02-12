@@ -15,10 +15,14 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
-      - name: Install & Build
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
         run: |
-          npm install
-          npm run build
+          echo "Starting Build..."
+          npm run build --if-present
+          echo "Build finished."
 
       - name: Run Scraper
         env:
@@ -27,5 +31,21 @@ jobs:
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
           DEBUG: "*"
           TZ: "Asia/Jerusalem"
-        # הוספנו את המילה scrape בסוף הפקודה כדי שהבוט יבין מה המשימה שלו
-        run: node dst/index.js scrape
+        run: |
+          echo "--- 1. Checking if dst/index.js exists ---"
+          if [ -f "dst/index.js" ]; then
+            echo "File found! Running now..."
+            node dst/index.js scrape
+          else
+            echo "--- 2. Could not find dst/index.js. Checking root folder ---"
+            ls -F
+            if [ -f "index.js" ]; then
+              echo "Found index.js in root. Running..."
+              node index.js scrape
+            else
+              echo "--- 3. CRITICAL ERROR: Could not find any index.js file ---"
+              echo "Searching for all .js files in the project:"
+              find . -name "*.js" -not -path "./node_modules/*"
+              exit 1
+            fi
+          fi
