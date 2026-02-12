@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Moneyman
-        uses: docker://idokoren/moneyman:latest
+        # שימוש בגרסה הציבורית המעודכנת ביותר
+        uses: docker://theidok/moneyman:latest
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
