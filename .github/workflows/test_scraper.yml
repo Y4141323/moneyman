@@ -6,35 +6,10 @@ jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Force Output Check
+      - name: Kill and Speak
         run: |
-          echo "=========================================="
-          echo "THE ACTION IS RUNNING SUCCESSFULLY"
-          echo "TIME: $(date)"
-          echo "=========================================="
-          
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install and Run
-        env:
-          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-          DEBUG: "*"
-        run: |
-          echo "Step 1: Installing dependencies..."
-          npm install
-          npm install -g tsx
-          
-          echo "Step 2: Checking if files exist..."
-          ls -R | grep index
-          
-          echo "Step 3: Running the scraper..."
-          # פקודה שמכריחה את כל הפלט לצאת למסך
-          stdbuf -oL npx tsx src/index.ts scrape 2>&1 || echo "Run failed or file not found"
+          echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >&2
+          echo "CRITICAL CHECK: IF YOU SEE THIS, LOGS WORK" >&2
+          echo "TIME: $(date)" >&2
+          echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >&2
+          exit 1 # זה יכריח את השלב להיות אדום ולהציג את הטקסט
