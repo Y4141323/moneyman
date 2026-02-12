@@ -12,20 +12,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # מעודכן לדרישות הפרויקט שלך
+          node-version: '24'
           cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Project
-        run: npm run build # בונה את תיקיית dst/ הנחוצה
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
 
       - name: Run Scraper
         env:
           GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-          DEBUG: "scraper*" # מציג לוגים ספציפיים של הסריקה
+          DEBUG: "*"
           TZ: "Asia/Jerusalem"
-        run: npm start # מפעיל את node dst/index.js
+        # הוספנו את המילה scrape בסוף הפקודה כדי שהבוט יבין מה המשימה שלו
+        run: node dst/index.js scrape
