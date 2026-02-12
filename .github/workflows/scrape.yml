@@ -1,4 +1,4 @@
-name: Real Scrape
+name: Scrape
 on:
   workflow_dispatch:
 
@@ -6,22 +6,20 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # מעדכנים לגרסה שהבוט דורש
+          node-version: '24' # חשוב! הלוג הראה שגרסה 20 לא נתמכת
 
-      - name: Install
+      - name: Install Dependencies
         run: npm install
 
-      - name: Run
+      - name: Run Scraper
         env:
-          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
-          # אנחנו "מכריחים" את הקוד לקרוא את זה כקובץ הגדרות
+          # כאן אנחנו בונים את הקונפיגורציה מתוך ה-Secrets שלך
           MONEYMAN_CONFIG: |
             {
               "storage": {
@@ -31,6 +29,6 @@ jobs:
               },
               "accounts": ${{ secrets.ACCOUNTS_JSON }}
             }
-        run: |
-          # הרצה ישירה עם הגדרות מוזרקות
-          npx tsx src/index.ts scrape
+          DEBUG: "*"
+          TZ: "Asia/Jerusalem"
+        run: npx tsx src/index.ts scrape
