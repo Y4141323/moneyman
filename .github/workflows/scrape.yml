@@ -5,8 +5,16 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    # אנחנו מוסיפים כאן הגדרה מפורשת של ה-Container
+    container:
+      image: ghcr.io/idokoren/moneyman:latest
+    
     steps:
       - name: Run Scraper
+        env:
+          GOOGLE_SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_KEY }}
+          ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
-          echo "Starting simple test..."
-          docker run --rm ghcr.io/idokoren/moneyman:latest
+          # בתוך קונטיינר אנחנו מריצים את הפקודה ישירות
+          node dist/index.js scrape
